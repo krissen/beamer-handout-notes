@@ -1,0 +1,68 @@
+\NeedsTeXFormat{LaTeX2e}[2021/06/01]
+\ProvidesPackage{beamerhandoutnotes}[2026/11/01 v1.3 En anteckningssida per bild i Beamer]
+
+% Med \setbeameroption{show notes} skriver Beamer bara ut en anteckningssida
+% för bilder som har \note. I en handout med pgfpages "2 on 1" glider då
+% paren isär: en bild hamnar nederst, eller två bilder på samma ark.
+% Paketet ger varje bild exakt en anteckningssida, tom om \note saknas, så
+% att bilden alltid står överst och anteckningarna nederst.
+%
+% Användning: \usepackage{beamerhandoutnotes} i preamblen. Paketet gör
+% ingenting om anteckningarna är dolda eller visas på en andra skärm.
+%
+% Före varje anteckningssida räknas sidhuvudets och sidfotens mått om
+% (\beamer@calculateheadfoot). Annars ligger en ram med högre sidfot (t.ex.
+% framefoot) kvar i \vsize och \@colht; anteckningsrutan ryms då inte och
+% föregås av en tom sida.
+%
+% Notsidan sätts med mallen plain: bilden står ju redan ovanför, så
+% standardmallens miniatyr och rubrik tar bara plats från anteckningarna.
+%
+% Ramar med allowframebreaks får en tom anteckning på varje sida.
+%
+% Mekanik: en lucka fylls först när nästa bild börjar (eller dokumentet
+% slutar), och bara om föregående bild inte fått någon anteckning. Därför ger
+% en \note utanför ramen inte en extra sida. En tom \note{} ger ingen sida
+% alls; utfyllnaden är \mbox{}.
+
+\@ifclassloaded{beamer}{}{%
+  \PackageWarningNoLine{beamerhandoutnotes}{Klassen är inte beamer; paketet gör ingenting}%
+  \endinput
+}
+
+\newif\ifkrissen@hadnote
+\newif\ifkrissen@autobreak
+\krissen@hadnotetrue
+
+\newcommand*\krissen@fillnote{%
+  \ifkrissen@hadnote\else
+    \beamer@outsideframenote{\mbox{}}%
+  \fi
+  \global\krissen@hadnotefalse
+}
+
+\AtBeginDocument{%
+  \ifbeamer@notes
+    \ifbeamer@twoscreensnotes\else
+      \AddToHook{cmd/beamer@outsideframenote/before}{%
+        \global\krissen@hadnotetrue
+        \beamer@calculateheadfoot
+      }%
+      \AddToHook{cmd/beamer@setupnote/before}{\global\krissen@hadnotetrue}%
+      \AddToHook{cmd/beamer@doseveralframes/before}{\krissen@fillnote}%
+      \AddToHook{cmd/beamer@dosingleframe/before}{\krissen@fillnote}%
+      \AddToHook{cmd/beamer@autobreakframe/before}{%
+        \krissen@fillnote
+        \global\krissen@autobreaktrue
+      }%
+      \AddToHook{cmd/beamer@framenotesbegin/after}{%
+        \ifkrissen@autobreak\gdef\beamer@notes{\mbox{}}\fi
+      }%
+      \AddToHook{env/frame/begin}{\global\krissen@autobreakfalse}%
+      \AddToHook{enddocument}{\krissen@fillnote}%
+      \setbeamertemplate{note page}[plain]%
+    \fi
+  \fi
+}
+
+\endinput

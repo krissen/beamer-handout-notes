@@ -1,0 +1,9 @@
+\input regression-test.tex\relax
+\documentclass[handout]{beamer}
+\setbeameroption{show notes}
+\usepackage{beamerhandoutnotes}
+\begin{document}
+\START
+\TEST{hook defined}{\ifdefined\krissen@fillnote\TRUE\else\FALSE\fi}
+\TEST{note template}{\ifdefined\beamer@outsideframenote\TRUE\else\FALSE\fi}
+\end{document}
