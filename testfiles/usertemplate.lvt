@@ -1,0 +1,12 @@
+\input regression-test.tex\relax
+\documentclass[handout]{beamer}
+\setbeameroption{show notes}
+\setbeamertemplate{note page}{USERTEMPLATE\insertnote}
+\usepackage{beamerhandoutnotes}
+\begin{document}
+\START
+\makeatletter
+\TEST{user note page template kept}{\TYPE{\meaning\krissen@usernotepage}}
+\TEST{active template dispatches}{\TYPE{\expandafter\meaning\csname beamer@@tmpl@note page\endcsname}}
+\makeatother
+\end{document}

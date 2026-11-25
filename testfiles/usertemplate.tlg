@@ -1,0 +1,22 @@
+This is a generated file for the l3build validation system.
+Don't change this file in any respect.
+============================================================
+TEST 1: user note page template kept
+============================================================
+\long macro:->USERTEMPLATE\insertnote 
+============================================================
+============================================================
+TEST 2: active template dispatches
+============================================================
+\long macro:->\ifkrissen@emptynote \insertnote \else \krissen@usernotepage \fi 
+============================================================
+\tf@nav=\write...
+\tf@toc=\write...
+\tf@snm=\write...
+(usertemplate.aux)
+Package rerunfilecheck Warning: File `usertemplate.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+Package rerunfilecheck Info: Checksums for `usertemplate.out':
+(rerunfilecheck)             Before: <no file>
+(rerunfilecheck)             After:  D41D8CD98F00B204E9800998ECF8427E;0.
