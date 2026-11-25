@@ -1,6 +1,6 @@
 module = "beamerhandoutnotes"
-pkgversion = "2026-11-01"
-pkgdate = "2026-11-01"
+pkgversion = "2026-11-25"
+pkgdate = "2026-11-25"
 installfiles = {"*.sty"}
 checkengines = {"luatex"}
 stdengine = "luatex"
